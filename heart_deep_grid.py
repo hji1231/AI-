@@ -19,24 +19,24 @@ sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
 X_test = sc.fit_transform(X_test)
 
-def build_model(n_hidden=1, n_neurons=30, learning_rate=3e-3):
+def build_model(n_hidden_Layer, n_hidden_Layer_sizes, learning_rate):
     model=Sequential()
     model.add(Dense(units = 512, input_shape=(20,)))
-    for layer in range(n_hidden):
-        model.add(Dense(n_neurons, activation='relu'))
+    for layer in range(n_hidden_Layer):
+        model.add(Dense(n_hidden_Layer_sizes, activation='relu'))
     model.add(Dense(1, activation = 'sigmoid'))
     model.compile(loss='binary_crossentropy', optimizer=Adam(lr= learning_rate), metrics = ['accuracy'])
     return model
 
-keras_reg=keras.wrappers.scikit_learn.KerasRegressor(build_model)
+keras_model=keras.wrappers.scikit_learn.KerasClassifier(build_model)
 
-param_distribs={
-    'n_hidden' : [0, 1, 2, 3, 4, 5],
-    'n_neurons': [64, 128, 256, 512],
-    'learning_rate' : [0.1, 0.01, 0.001, 0.0001, 0.00001]
+param={
+    'n_hidden_Layer' : [0, 1, 2, 3, 4, 5],
+    'n_hidden_Layer_sizes': [64, 128, 256, 512],
+    'learning_rate' : [0.1, 0.01, 0.001, 0.0001]
     }
 
-grid = GridSearchCV(keras_reg, param_grid=param_distribs, scoring='accuracy', refit=True, verbose=2)
+grid = GridSearchCV(keras_model, param_grid=param, scoring='accuracy', refit=True, verbose=2)
 grid.fit(X_train, y_train, epochs=20, batch_size = 256,
          validation_data=(X_test, y_test))
 
