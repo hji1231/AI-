@@ -20,7 +20,7 @@ X_test = sc.fit_transform(X_test)
 mlp = MLPClassifier()
 
 param = {"hidden_layer_sizes": [1024,512,256,128,64,32,16,8,4,2],
-         "learning_rate_init": [0.1,0.01,0.001,0.0001,0.00001],
+         "learning_rate_init": [0.1,0.01,0.001,0.0001,0.0001],
          "batch_size": [32,64,128,256],
          "solver": ['sgd','adam']}
 
